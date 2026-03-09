@@ -42,12 +42,17 @@ if get_llm_config().llm_provider.lower() == "gemini":
 else:
 
     class Node(BaseModel):
-        """Node in a knowledge graph."""
-
         id: str
-        name: str
+        name: str = ""
         type: str
         description: str
+        properties: dict
+        edges: list
+    
+        def __init__(self, **data):
+            if not data.get("name"):
+                data["name"] = data.get("id", "")
+            super().__init__(**data)
 
     class Edge(BaseModel):
         """Edge in a knowledge graph."""
